@@ -54,11 +54,16 @@ def create_app(config_name):
 
     app.register_blueprint(main_blueprint)
 
+    from .modules.posts import post_bp as post_blueprint
+
+    app.register_blueprint(post_blueprint, url_prefix='/posts')
+
     from .modules.api_1_0 import api as api_1_0_blueprint
 
     app.register_blueprint(api_1_0_blueprint, url_prefix='/v1')
 
     from .core.admin import admin as core_admin
     from .modules.api_1_0 import admin as api_admin
+    from .modules.posts import admin as posts_admin
 
     return app
