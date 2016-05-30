@@ -6,7 +6,7 @@ from flask import Flask
 from flask.ext.security import SQLAlchemyUserDatastore, Security
 
 from .database import db
-from .extensions import admin, config, cors, debug_toolbar, mail
+from .extensions import admin, config, cors, debug_toolbar, mail, oauth
 
 __version__ = '0.1'
 
@@ -43,6 +43,8 @@ def create_app(config_name):
     db.init_app(app)
 
     cors.init_app(app, resources={r"/v1/*": {"origins": "*"}})
+    oauth.init_app(app)
+
     security.init_app(app)
     debug_toolbar.init_app(app)
     mail.init_app(app)
@@ -52,6 +54,11 @@ def create_app(config_name):
 
     app.register_blueprint(main_blueprint)
 
+    from .modules.api_1_0 import api as api_1_0_blueprint
+
+    app.register_blueprint(api_1_0_blueprint, url_prefix='/v1')
+
     from .core.admin import admin as core_admin
+    from .modules.api_1_0 import admin as api_admin
 
     return app

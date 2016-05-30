@@ -4,9 +4,11 @@ from flask.ext.config_helper import Config
 from flask.ext.cors import CORS
 from flask.ext.debugtoolbar import DebugToolbarExtension
 from flask.ext.mail import Mail
+from flask.ext.oauthlib.provider import OAuth2Provider
 
 admin = Admin()
 config = Config()
 cors = CORS()
 debug_toolbar = DebugToolbarExtension()
 mail = Mail()
+oauth = OAuth2Provider()
