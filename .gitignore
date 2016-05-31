@@ -61,5 +61,4 @@ docs/_build/
 .idea
 .vagrant
 app.yml
-config.ini
-delivery/static/category_images
+static/uploads/thingy_image/*
