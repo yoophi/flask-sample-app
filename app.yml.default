@@ -10,6 +10,15 @@ COMMON: &common
   MAIL_USE_SSL: False
   MAIL_USERNAME: ''
   MAIL_PASSWORD: ''
+  PROJECT_ROOT: '/abs/path/to/sample_app/sample_app'
+  THINGY_IMAGE_RELATIVE_PATH: 'thingy_image/'
+  UPLOADS_RELATIVE_PATH: 'uploads/'
+  UPLOADS_FOLDER: '/abs/path/to/sample_app/static/uploads/'
+  USE_S3: True
+  S3_BUCKET_NAME: 's3-bucket-name'
+  AWS_ACCESS_KEY_ID: 'aws-access-key-id'
+  AWS_SECRET_ACCESS_KEY: 'aws-secret-access-key'
+  S3_USE_HTTPS: False
 
 DEFAULT: &default
   <<: *common

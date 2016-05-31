@@ -58,6 +58,10 @@ def create_app(config_name):
 
     app.register_blueprint(post_blueprint, url_prefix='/posts')
 
+    from .modules.foo import mod as foo_blueprint
+
+    app.register_blueprint(foo_blueprint, url_prefix='/foo')
+
     from .modules.api_1_0 import api as api_1_0_blueprint
 
     app.register_blueprint(api_1_0_blueprint, url_prefix='/v1')
@@ -65,5 +69,24 @@ def create_app(config_name):
     from .core.admin import admin as core_admin
     from .modules.api_1_0 import admin as api_admin
     from .modules.posts import admin as posts_admin
+    from .modules.foo import admin as foo_admin
 
     return app
+
+
+def create_app_min(config_name='default'):
+    """
+    :param config_name: developtment, production or testing
+    :return: flask application
+
+    flask application generator
+    """
+    app = Flask(__name__)
+    config.init_app(app)
+    app.config.from_yaml(config_name=config_name,
+                         file_name='app.yml',
+                         search_paths=[path.dirname(app.root_path)])
+    app.config.from_heroku(keys=['SQLALCHEMY_DATABASE_URI', ])
+
+    return app
+
