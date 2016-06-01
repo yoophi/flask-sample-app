@@ -1,12 +1,19 @@
 #!/usr/bin/env python
-# coding: utf-8
 
+from __future__ import print_function
+
+# Set the path
 import os
+import sys
 
-from flask.ext.script import Manager, Shell
-from flask.ext.migrate import Migrate, MigrateCommand
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from sample_app import create_app, db
+from flask_script import Manager, Server
+from flask_script.commands import Shell, ShowUrls
+from flask_migrate import MigrateCommand, Migrate
+
+from sample_app import create_app
+from sample_app.database import db
 
 COV = None
 if os.environ.get('FLASK_COVERAGE'):
@@ -15,8 +22,7 @@ if os.environ.get('FLASK_COVERAGE'):
     COV = coverage.coverage(branch=True, include='sample/*')
     COV.start()
 
-app = create_app(os.getenv('FLASK_CONFIG') or 'development')
-
+app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 manager = Manager(app)
 migrate = Migrate(app, db)
 
@@ -41,17 +47,21 @@ def test(coverage=False):
     if COV:
         COV.stop()
         COV.save()
-        print 'Coverage Summary:'
+        print('Coverage Summary:')
         COV.report()
         basedir = os.path.abspath(os.path.dirname(__file__))
         covdir = os.path.join(basedir, 'tmp/coverage')
         COV.html_report(directory=covdir)
-        print 'HTML version: file://%s/index.html' % (covdir,)
+        print('HTML version: file://%s/index.html' % (covdir,))
         COV.erase()
 
 
-manager.add_command('shell', Shell(make_context=make_shell_context))
-manager.add_command('db', MigrateCommand)
+# Turn on debugger by default and reloader
+manager.add_command("runserver", Server(use_debugger=True, use_reloader=True, host='0.0.0.0'))
 
-if __name__ == '__main__':
+manager.add_command('db', MigrateCommand)
+manager.add_command('shell', Shell(make_context=make_shell_context))
+manager.add_command('show_urls', ShowUrls)
+
+if __name__ == "__main__":
     manager.run()

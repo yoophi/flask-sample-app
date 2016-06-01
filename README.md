@@ -1,2 +1,1 @@
-SAMPLE
-======
+# flask-sample-app
