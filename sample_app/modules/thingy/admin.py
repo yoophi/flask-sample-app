@@ -3,11 +3,19 @@ from os import path
 from flask.ext.admin.contrib import sqla
 from flask_admin_s3_upload import S3ImageUploadField
 
+<<<<<<< e5f3039b74b02fa5d8f6b87dc78566d28bc7c142:sample_app/modules/thingy/admin.py
 from sample_app.database import db
 from sample_app.extensions import admin
 from sample_app.library.get_setting_value import get_setting_value
 from sample_app.library.prefix_file_utcnow import prefix_file_utcnow
 from .models import Thingy
+=======
+from sample_app.library.get_setting_value import get_setting_value
+from .models import Thingy
+from ...database import db
+from ...extensions import admin
+from ...library.prefix_file_utcnow import prefix_file_utcnow
+>>>>>>> s3 업로드 관련 모듈 샘플 추가:sample_app/modules/foo/admin.py
 
 
 class ThingyView(sqla.ModelView):

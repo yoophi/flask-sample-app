@@ -1,7 +1,6 @@
 from io import BytesIO
 from os import path
 
-from flask import current_app as app
 from flask import flash
 from flask import redirect
 from flask import render_template
@@ -13,6 +12,12 @@ from sample_app.library.prefix_file_utcnow import prefix_file_utcnow
 from . import mod
 from .forms import ThingySaveForm
 from .models import Thingy
+<<<<<<< e5f3039b74b02fa5d8f6b87dc78566d28bc7c142:sample_app/modules/thingy/views.py
+=======
+from ...database import db
+from ...library.get_setting_value import get_setting_value
+from ...library.prefix_file_utcnow import prefix_file_utcnow
+>>>>>>> s3 업로드 관련 모듈 샘플 추가:sample_app/modules/foo/views.py
 
 
 @mod.route('/', methods=['GET', 'POST'])
@@ -30,16 +35,16 @@ def home():
 
         # Initialise s3-saver.
         image_saver = S3Saver(
-            storage_type=app.config['USE_S3'] and 's3' or None,
-            bucket_name=app.config['S3_BUCKET_NAME'],
-            access_key_id=app.config['AWS_ACCESS_KEY_ID'],
-            access_key_secret=app.config['AWS_SECRET_ACCESS_KEY'],
+            storage_type=get_setting_value('USE_S3') and 's3' or None,
+            bucket_name=get_setting_value('S3_BUCKET_NAME'),
+            access_key_id=get_setting_value('AWS_ACCESS_KEY_ID'),
+            access_key_secret=get_setting_value('AWS_SECRET_ACCESS_KEY'),
             field_name='image',
             storage_type_field='image_storage_type',
             bucket_name_field='image_storage_bucket_name',
-            base_path=app.config['UPLOADS_FOLDER'],
+            base_path=get_setting_value('UPLOADS_FOLDER'),
             static_root_parent=path.abspath(
-                path.join(app.config['PROJECT_ROOT'], '..')))
+                path.join(get_setting_value('PROJECT_ROOT'), '..')))
 
         form.populate_obj(model)
 
@@ -49,8 +54,8 @@ def home():
             filepath = path.abspath(
                 path.join(
                     path.join(
-                        app.config['UPLOADS_FOLDER'],
-                        app.config['THINGY_IMAGE_RELATIVE_PATH']),
+                        get_setting_value('UPLOADS_FOLDER'),
+                        get_setting_value('THINGY_IMAGE_RELATIVE_PATH')),
                     filename))
 
             # Best to pass in a BytesIO to S3Saver, containing the
@@ -68,7 +73,7 @@ def home():
             # could get saved to local filesystem or to S3.
             image_saver.save(
                 temp_file,
-                app.config['THINGY_IMAGE_RELATIVE_PATH'] + filename,
+                get_setting_value('THINGY_IMAGE_RELATIVE_PATH') + filename,
                 model)
 
             # If updating an existing image,
@@ -76,7 +81,7 @@ def home():
             if image_orig:
                 if image_orig != model.image:
                     filepath = path.join(
-                        app.config['UPLOADS_FOLDER'],
+                        get_setting_value('UPLOADS_FOLDER'),
                         image_orig)
 
                     image_saver.delete(filepath,
@@ -84,7 +89,7 @@ def home():
                         bucket_name=image_bucket_name_orig)
 
                 glob_filepath_split = path.splitext(path.join(
-                    app.config['MEDIA_THUMBNAIL_FOLDER'],
+                    get_setting_value('MEDIA_THUMBNAIL_FOLDER'),
                     image_orig))
                 glob_filepath = glob_filepath_split[0]
                 glob_matches = image_saver.find_by_path(
@@ -103,7 +108,7 @@ def home():
         # Handle image deletion
         if form.image_delete.data and image_orig:
             filepath = path.join(
-                app.config['UPLOADS_FOLDER'], image_orig)
+                get_setting_value('UPLOADS_FOLDER'), image_orig)
 
             # Delete the file. In this case, we have to pass in
             # arguments specifying whether to delete locally or on
@@ -116,7 +121,7 @@ def home():
 
             # Also delete thumbnails
             glob_filepath_split = path.splitext(path.join(
-                app.config['MEDIA_THUMBNAIL_FOLDER'],
+                get_setting_value('MEDIA_THUMBNAIL_FOLDER'),
                 image_orig))
             glob_filepath = glob_filepath_split[0]
 

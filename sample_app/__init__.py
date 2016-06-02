@@ -35,6 +35,14 @@ def create_app(config_name='default'):
     debug_toolbar.init_app(app)
     mail.init_app(app)
     admin.init_app(app)
+    bootstrap.init_app(app)
+    thumbnail.init_app(app)
+
+    from flask.ext.uploads import configure_uploads, patch_request_class
+    from .modules.foo.uploads import upload_sets
+
+    configure_uploads(app, upload_sets)
+    patch_request_class(app)
 
     from sample_app.core import core as main_blueprint
 

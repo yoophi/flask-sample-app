@@ -1,9 +1,30 @@
 COMMON: &common
   SECRET_KEY: insecure
-  SECURITY_POST_LOGIN_VIEW: '/profile'
-  SQLALCHEMY_DATABASE_URI: postgresql://postgres:password@192.168.0.10:5432/flask_social_example_development
+  SQLALCHEMY_DATABASE_URI: 'sqlite:////tmp/sample_app.sqlite'
   ADMIN_CREDENTIALS: 'admin,password'
   SECURITY_TRACKABLE: True
+  SECURITY_REGISTERABLE: True
+  DEBUG_TB_INTERCEPT_REDIRECTS: False
+  MAIL_SERVER: aspmx.l.google.com
+  MAIL_PORT: 25
+  MAIL_USE_SSL: False
+  MAIL_USERNAME: ''
+  MAIL_PASSWORD: ''
+  THINGY_IMAGE_RELATIVE_PATH: 'thingy_image/'
+  UPLOADS_RELATIVE_PATH: 'uploads/'
+  USE_S3: True
+  S3_BUCKET_NAME: 's3-bucket-name'
+  AWS_ACCESS_KEY_ID: 'aws-access-key-id'
+  AWS_SECRET_ACCESS_KEY: 'aws-secret-access-key'
+  S3_USE_HTTPS: False
+  MEDIA_URL: '/static/uploads/'
+  MEDIA_THUMBNAIL_URL: 'cache/thumbnails/'
+
+  THUMBNAIL_S3_STORAGE_TYPE: 's3'
+  THUMBNAIL_S3_BUCKET_NAME: 'greeme-jp-dev'
+  THUMBNAIL_S3_ACCESS_KEY_ID: 'AKIAII4UTWDLNPQRNJQA'
+  THUMBNAIL_S3_ACCESS_KEY_SECRET: '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'
+  THUMBNAIL_S3_USE_HTTPS: False
 
 DEVELOPMENT: &development
   <<: *common
