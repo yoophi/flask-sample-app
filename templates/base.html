@@ -29,14 +29,14 @@
         <div class="navbar-inner">
             <div class="container">
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ url_for('main.index') }}">SAMPLE</a></li>
+                    <li><a href="{{ url_for('core.index') }}">SAMPLE</a></li>
                 </ul>
                 <ul class="nav pull-right">
-                    {% if current_user.is_authenticated() %}
-                    <li><a href="{{ url_for('auth.logout') }}">로그아웃 </a></li>
+                    {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('security.logout') }}">Logout </a></li>
                     {% else %}
-                    <li><a href="{{ url_for('auth.login') }}">로그인 </a></li>
-                    <li><a href="{{ url_for('auth.join') }}">회원가입 </a></li>
+                    <li><a href="{{ url_for('security.login') }}">Login </a></li>
+                    <li><a href="{{ url_for('security.register') }}">Register </a></li>
                     {% endif %}
                 </ul>
             </div>
@@ -47,7 +47,7 @@
     </div>
     <div class="footer">
         <div class="container">
-                sample application
+            sample application
         </div>
     </div>
 </div>

@@ -8,12 +8,11 @@ from flask import render_template
 from flask import url_for
 from s3_saver import S3Saver
 
-# from project import db
+from sample_app.database import db
+from sample_app.library.prefix_file_utcnow import prefix_file_utcnow
 from . import mod
 from .forms import ThingySaveForm
 from .models import Thingy
-from ...database import db
-from ...library.prefix_file_utcnow import prefix_file_utcnow
 
 
 @mod.route('/', methods=['GET', 'POST'])
@@ -141,16 +140,14 @@ def home():
         if form.image.data or form.image_delete.data:
             db.session.add(model)
             db.session.commit()
-            flash('Thingy %s' % (
-                      form.image_delete.data and 'deleted' or 'saved'),
+            flash('Thingy %s' % (form.image_delete.data and 'deleted' or 'saved'),
                   'success')
         else:
             flash(
-                'Please upload a new thingy or delete the ' +
-                    'existing thingy',
+                'Please upload a new thingy or delete the existing thingy',
                 'warning')
 
-        return redirect(url_for('foo.home'))
+        return redirect(url_for('thingy.home'))
 
     return render_template('home.html',
                            form=form,

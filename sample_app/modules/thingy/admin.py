@@ -1,40 +1,13 @@
 from os import path
 
-from flask import current_app
 from flask.ext.admin.contrib import sqla
 from flask_admin_s3_upload import S3ImageUploadField
-from speaklater import make_lazy_string
 
-from sample_app import create_app_min
+from sample_app.database import db
+from sample_app.extensions import admin
+from sample_app.library.get_setting_value import get_setting_value
+from sample_app.library.prefix_file_utcnow import prefix_file_utcnow
 from .models import Thingy
-from ...database import db
-from ...extensions import admin
-from ...library.admin_utils import ProtectedModelView
-from ...library.prefix_file_utcnow import prefix_file_utcnow
-
-
-def get_setting_value(key, default=None):
-    try:
-        return current_app.config.get(key, default)
-    except RuntimeError as e:
-        # logger.warning('current_app is inaccessible: %s' % e)
-        pass
-
-    try:
-        app = create_app_min()
-        db.init_app(app)
-        with app.app_context():
-            return app.config.get(key, default)
-    except:
-        return default
-
-# def get_setting_value(key):
-#     def get_config(key):
-#         from flask import current_app as app
-#
-#         return app.config.get(key, '')
-#
-#     return make_lazy_string(lambda: get_config(key))
 
 
 class ThingyView(sqla.ModelView):
@@ -68,16 +41,7 @@ class ThingyView(sqla.ModelView):
         form_class.image.kwargs['access_key_secret'] = get_setting_value('AWS_SECRET_ACCESS_KEY')
         form_class.image.kwargs['static_root_parent'] = static_root_parent
 
-        for k, v in form_class.image.kwargs.iteritems():
-            print k, v
-
-        print '=' * 80
-
-        for k, v in self.form_args['image'].iteritems():
-            print k, v
-
         return form_class
 
-print '>' * 80
+
 admin.add_view(ThingyView(Thingy, db.session, name='Thingies'))
-print '<' * 80

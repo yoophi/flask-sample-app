@@ -127,7 +127,7 @@ def user_access_token():
 
        {
           'grant_type': 'password',
-          'client_id': 'foo',
+          'client_id': 'thingy',
           'client_secret': 'secret',
           'username': 'sample@test.com',
           'password': 'secret',
