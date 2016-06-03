@@ -1,19 +1,17 @@
 #!/usr/bin/env python
 
 from __future__ import print_function
-
 # Set the path
 import os
 import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from flask_script import Manager, Server
-from flask_script.commands import Shell, ShowUrls
-from flask_migrate import MigrateCommand, Migrate
-
-from sample_app import create_app
-from sample_app.database import db
+from flask_script import Manager, Server  # NOQA
+from flask_script.commands import Shell, ShowUrls  # NOQA
+from flask_migrate import MigrateCommand, Migrate  # NOQA
+from sample_app import create_app  # NOQA
+from sample_app.database import db  # NOQA
 
 COV = None
 if os.environ.get('FLASK_COVERAGE'):
@@ -58,7 +56,6 @@ def test(coverage=False):
 
 # Turn on debugger by default and reloader
 manager.add_command("runserver", Server(use_debugger=True, use_reloader=True, host='0.0.0.0'))
-
 manager.add_command('db', MigrateCommand)
 manager.add_command('shell', Shell(make_context=make_shell_context))
 manager.add_command('show_urls', ShowUrls)

@@ -3,7 +3,7 @@
 from flask import request, jsonify
 
 from . import api
-from ...extensions import oauth
+from sample_app.extensions import oauth
 
 
 @api.route('/me')
